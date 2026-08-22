@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Aura Dramatica | Особистий кабінет</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body class="repertoire-page-body">
+    <header>
+        <nav>
+            <div class="logo">AURA <span>DRAMATICA</span></div>
+            <ul>
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="repertoire.html">Репертуар</a></li>
+                <li><a href="booking.html">Забронювати</a></li>
+                <li><a href="account.html" class="active">Мій кабінет</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container account-main">
+        <div id="auth-block" class="auth-container">
+            <h2 class="card-title">Вхід до системи</h2>
+            <div class="auth-tabs">
+                <button id="tab-login" class="auth-tab active" onclick="toggleAuth('login')">Увійти</button>
+                <button id="tab-signup" class="auth-tab" onclick="toggleAuth('signup')">Реєстрація</button>
+            </div>
+            <form id="auth-form" class="auth-form">
+                <input type="text" id="username" placeholder="Ваше ім'я" required>
+                <input type="email" id="useremail" placeholder="Електронна пошта" required>
+                <button type="submit" id="auth-submit-btn">Увійти</button>
+            </form>
+            <p id="auth-msg" class="auth-error"></p>
+        </div>
+        <div id="cabinet-block" style="display: none;">
+            <div class="cabinet-header">
+                <h1 id="welcome-user" class="page-title">Вітаємо!</h1>
+                <button onclick="logout()" class="logout-btn">Вийти з аккаунту</button>
+            </div>
+            <div class="account-grid">
+                <section class="profile-card">
+                    <h3 class="card-title">Ваш Профіль</h3>
+                    <div class="info-group">
+                        <label>Ім'я користувача</label>
+                        <p id="profile-name">-</p>
+                    </div>
+                    <div class="info-group">
+                        <label>Електронна пошта</label>
+                        <p id="profile-email">-</p>
+                    </div>
+                </section>
+                <section class="tickets-card">
+                    <div class="tickets-card-header">
+                        <h3 class="card-title" style="margin-bottom: 0;">Мої замовлення</h3>
+                        <div id="cancel-all-container"></div>
+                    </div>
+                    <div id="tickets-list"></div>
+                </section>
+            </div>
+        </div>
+        <div id="custom-confirm" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <h3 id="modal-title">Скасування бронювання</h3>
+                <p id="modal-text">Ви впевнені, що хочете скасувати цей квиток? Це место знову стане доступним для вибору.</p>
+                <div class="modal-buttons">
+                    <button id="confirm-yes" class="modal-btn btn-danger">Так, скасувати</button>
+                    <button id="confirm-no" class="modal-btn btn-secondary">Залишити</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        let currentMode = 'login';
+        let deleteMode = 'single';
+        let ticketToDelete = null;
+        const authForm = document.getElementById('auth-form');
+        function toggleAuth(mode) {
+            currentMode = mode;
+            document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+            document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
+            document.getElementById('auth-submit-btn').innerText = mode === 'login' ? 'Увійти' : 'Зареєструватися';
+            document.getElementById('auth-msg').innerText = '';
+        }
+        authForm.onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('username').value;
+            const email = document.getElementById('useremail').value;
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            if (currentMode === 'signup') {
+                const userExists = users.find(u => u.email === email);
+                if (userExists) {
+                    document.getElementById('auth-msg').innerText = 'Ця пошта вже зареєстрована!';
+                } else {
+                    const newUser = { name, email };
+                    users.push(newUser);
+                    localStorage.setItem('registeredUsers', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify(newUser));
+                    checkAuth();
+                }
+            } else {
+                const user = users.find(u => u.email === email && u.name === name);
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    checkAuth();
+                } else {
+                    document.getElementById('auth-msg').innerText = 'Упс, ви не зареєстровані або дані невірні!';
+                }
+            }
+        };
+        function logout() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                document.getElementById('auth-block').style.display = 'none';
+                document.getElementById('cabinet-block').style.display = 'block';
+                document.getElementById('welcome-user').innerText = `Вітаємо, ${user.name}!`;
+                document.getElementById('profile-name').innerText = user.name;
+                document.getElementById('profile-email').innerText = user.email;
+                renderTickets();
+            }
+        }
+        function renderTickets() {
+            const list = document.getElementById('tickets-list');
+            const cancelAllContainer = document.getElementById('cancel-all-container');
+            const tickets = JSON.parse(localStorage.getItem('userTickets')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const perfNames = { chicago: "Мюзикл 'Чикаго'", phantom: "Привид Опери", swan: "Лебедине озеро" };
+            const userActiveTickets = tickets.filter(t => t.ownerEmail === currentUser.email);
+            if (userActiveTickets.length === 0) {
+                list.innerHTML = "<p class='empty-msg'>У вас поки немає придбаних квитків.</p>";
+                if (cancelAllContainer) cancelAllContainer.innerHTML = ''; 
+                return;
+            }
+            if (cancelAllContainer) {
+                cancelAllContainer.innerHTML = `
+                    <button class="cancel-btn" onclick="openCancelAllModal()" 
+                            style="background: transparent; border: 1px solid #ff6b6b; color: #ff6b6b; padding: 6px 12px; font-size: 11px; cursor: pointer; border-radius: 4px; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-weight: bold;">
+                        Скасувати всі
+                    </button>
+                `;
+            }
+            const reversedTickets = [...tickets].reverse();
+            list.innerHTML = reversedTickets.map((t) => {
+                const realIndex = tickets.indexOf(t);
+                if (t.ownerEmail !== currentUser.email) return '';
+                const displayInfo = t.text || t.seatText || t.seat || "Місце успішно заброньовано";
+                return `
+                <div class="ticket-item">
+                    <div class="ticket-meta">
+                        <h4>${perfNames[t.perf] || t.perf}</h4>
+                        <span style="font-size: 13px; color: #ccc; font-family: 'Montserrat', sans-serif;">${displayInfo}</span>
+                    </div>
+                    <div class="ticket-actions" style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                        <div class="status-badge">Квиток №${t.id}</div>
+                        <button class="cancel-btn" onclick="openConfirmModal(${realIndex})" 
+                                style="background: transparent; border: 1px solid #ff6b6b; color: #ff6b6b; padding: 4px 8px; font-size: 10px; cursor: pointer; border-radius: 3px; text-transform: uppercase;">
+                            Скасувати
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        function openConfirmModal(index) {
+            deleteMode = 'single';
+            ticketToDelete = index;
+            document.getElementById('modal-title').innerText = "Скасування бронювання";
+            document.getElementById('modal-text').innerText = "Ви впевнені, що хочете скасувати цей квиток? Це місце знову стане доступним для вибору.";
+            document.getElementById('custom-confirm').style.display = 'flex';
+        }
+        function openCancelAllModal() {
+            deleteMode = 'all';
+            document.getElementById('modal-title').innerText = "Скасування ВСІХ бронювань";
+            document.getElementById('modal-text').innerText = "Ви впевнені, що хочете скасувати ВСІ ваші квитки? Усі обрані місця в залі знову стануть вільними.";
+            document.getElementById('custom-confirm').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('custom-confirm').style.display = 'none';
+            ticketToDelete = null;
+        }
+        document.getElementById('confirm-yes').onclick = function() {
+            const tickets = JSON.parse(localStorage.getItem('userTickets')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (deleteMode === 'single' && ticketToDelete !== null) {
+                tickets.splice(ticketToDelete, 1);
+                localStorage.setItem('userTickets', JSON.stringify(tickets));
+            } else if (deleteMode === 'all') {
+                const updatedTickets = tickets.filter(t => t.ownerEmail !== currentUser.email);
+                localStorage.setItem('userTickets', JSON.stringify(updatedTickets));
+            }          
+            renderTickets();
+            closeModal();
+        };
+        document.getElementById('confirm-no').onclick = closeModal;
+        window.onload = checkAuth;
+    </script>
+</body>
+</html>

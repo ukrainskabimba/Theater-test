@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Dramatica | Зал та квитки</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Aura <span>Dramatica</span></div>
+            <ul>
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="booking.html" class="active">Зал та квитки</a></li>
+                <li><a href="repertoire.html">Репертуар</a></li>
+                <li><a href="account.html">Мій кабінет</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="booking-container">
+        <div class="selection-header" style="text-align: center; padding: 40px 0 10px;">
+            <h2 id="performance-title" class="page-title" style="padding: 0; margin-bottom: 15px;">Оберіть виставу</h2>
+            <select id="performance-select" style="padding: 12px 25px; background: rgba(255,255,255,0.1); color: var(--gold); border: 1px solid var(--gold); border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; outline: none;">
+                <option value="" style="background: var(--velvet);">Оберіть подію зі списку</option>
+                <option value="chicago" style="background: var(--velvet);">Чикаго</option>
+                <option value="phantom" style="background: var(--velvet);">Привид Опери</option>
+                <option value="swan" style="background: var(--velvet);">Лебедине Озеро</option>
+            </select>
+        </div>
+
+        <div id="date-selection" style="text-align: center; margin-bottom: 15px; display: none;">
+            <p style="color: var(--white); font-family: 'Montserrat', sans-serif; margin-bottom: 8px;">Оберіть дату:</p>
+            <div id="date-buttons-container" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;"></div>
+        </div>
+
+        <div id="time-selection" style="text-align: center; margin-bottom: 25px; display: none;">
+            <p style="color: var(--white); font-family: 'Montserrat', sans-serif; margin-bottom: 8px;">Оберіть час:</p>
+            <div id="time-buttons-container" style="display: flex; justify-content: center; gap: 10px;"></div>
+        </div>
+
+        <div id="hall-wrapper" style="opacity: 0.2; pointer-events: none; transition: 0.6s all ease;">
+            <div class="stage-container">
+                <span class="stage-label">СЦЕНА</span>
+                <div class="stage"></div>
+            </div>
+            <div class="theater-map">
+                <div class="side-label left">ЛІВА СТОРОНА</div>
+                <div class="sector side-sector" id="left-side"></div>
+                <div class="sector main-sector" id="parter"></div>
+                <div class="sector side-sector" id="right-side"></div>
+                <div class="side-label right">ПРАВА СТОРОНА</div>
+            </div>
+            <div class="selection-info">
+                <p>Ваше місце: <span id="selected-seat" style="color: var(--gold); font-weight: bold;">не обрано</span></p>
+                <p>До сплати: <span id="seat-price" style="color: var(--gold); font-weight: bold;">0</span> грн</p>
+                <br>
+                <button class="cta-button" id="book-btn">Забронювати квиток</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 Театр "Aura Dramatica".</p>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const perfParam = urlParams.get('performance');
+        const select = document.getElementById('performance-select');
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            if (perfParam) {
+                select.value = perfParam;
+                updateUI(perfParam);
+            } else {
+                updateUI("");
+            }
+        });
+
+        select.addEventListener('change', (e) => {
+            updateUI(e.target.value);
+        });
+    </script>
+</body>
+</html>
