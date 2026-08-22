@@ -22,7 +22,7 @@
             <div class="cvv-row">
                 <div>
                     <label>Термін дії</label>
-                    <input type="text" placeholder="MM/YY" maxlength="5" required>
+                    <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5" required>
                 </div>
                 <div>
                     <label>CVV</label>
@@ -44,6 +44,7 @@
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         const emailGroup = document.getElementById('email-group');
         const emailInput = document.getElementById('user-email');
+        const expiryInput = document.getElementById('expiry-date');
 
         if (currentUser) {
             emailGroup.style.display = 'none';
@@ -57,6 +58,16 @@
         
         cardInput.addEventListener('input', onlyNumbers);
         cvvInput.addEventListener('input', onlyNumbers);
+        expiryInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Оставляем только цифры
+            
+            if (value.length > 2) {
+                // Автоматически вставляем слеш после 2 символов
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            
+            e.target.value = value;
+        });
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
