@@ -68,6 +68,12 @@ nav ul li a:hover, nav ul li a.active {
     border-bottom: 2px solid var(--gold);
 }
 
+.lang-btn.active-lang {
+    background-color: var(--gold) !important;
+    color: var(--velvet) !important;
+    font-weight: bold;
+}
+
 .hero {
     height: 80vh;
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 

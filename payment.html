@@ -35,76 +35,97 @@
         </form>
     </div>
     <script>
+        // ===== ПОЛУЧЕНИЕ ЭЛЕМЕНТОВ ФОРМЫ =====
         const cardInput = document.getElementById('card-number');
         const cvvInput = document.getElementById('cvv-code');
         const form = document.getElementById('payment-form');
         const statusMsg = document.getElementById('status-message');
         const payBtn = document.getElementById('pay-btn');
         const backBtn = document.getElementById('back-to-hall-btn');
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         const emailGroup = document.getElementById('email-group');
         const emailInput = document.getElementById('user-email');
         const expiryInput = document.getElementById('expiry-date');
 
+        // ===== ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ ИЗ ЛОКАЛЬНОГО ХРАНИЛИЩА =====
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')); //объект, содержащий информацию залогированного пользователя
+
+        // ===== СКРЫТИЕ EMAIL ПОЛЯ ДЛЯ АВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ =====
         if (currentUser) {
             emailGroup.style.display = 'none';
             emailInput.removeAttribute('required');
             emailInput.value = currentUser.email;
         } 
         
+        // ===== ФИЛЬТРАЦИЯ ТОЛЬКО ЦИФР =====
         const onlyNumbers = (e) => {
             e.target.value = e.target.value.replace(/\D/g, ''); 
         };
         
+         // Привязываем функцию фильтрации к полям карты и CVV
         cardInput.addEventListener('input', onlyNumbers);
         cvvInput.addEventListener('input', onlyNumbers);
+        
+         // ===== АВТОФОРМАТИРОВАНИЕ ПОЛЯ СРОКА ДЕЙСТВИЯ КАРТЫ =====
         expiryInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
+            let value = e.target.value.replace(/\D/g, ''); //\D - регулярное выражение для "всё что не цифра", /g - глобально (все вхождения)
             
             if (value.length > 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);  // автоматически вставляем слеш после 2 символов
             }
             
             e.target.value = value;
         });
 
+        // ===== ОБРАБОТЧИК ОТПРАВКИ ФОРМЫ =====
         form.addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault(); //предотвращаем стандартную отправку формы
             statusMsg.innerText = "";
     
-            if (cardInput.value.length < 16) {
+            // Проверяем что введено ровно 16 цифр
+            if (cardInput.value.length < 16) { 
                 statusMsg.innerText = "Номер картки має містити 16 цифр!";
                 statusMsg.style.color = "#ff4d4d";
                 return;
             }
+
+            // Проверяем что введено ровно 3 цифры
             if (cvvInput.value.length < 3) {
                 statusMsg.innerText = "CVV код має містити 3 цифри!";
                 statusMsg.style.color = "#ff4d4d";
                 return;
             }
     
+            // ===== УСПЕШНАЯ ОПЛАТА =====
             statusMsg.innerText = "Оплата пройшла успішно! Квиток надіслано на вашу пошту.";
             statusMsg.style.color = "#f0d98f";
             payBtn.style.display = "none";
             backBtn.style.display = "block";
         });
 
+        // ===== ОБРАБОТЧИК КНОПКИ "ДОБРЕ" =====
         backBtn.addEventListener('click', () => {
+            // Проверяем что пользователь залогирован
             if (!currentUser) {
                 alert("Помилка: користувач не знайдений.");
                 window.location.href = 'account.html';
                 return;
             }
-    
-            let myTickets = JSON.parse(localStorage.getItem('userTickets')) || [];
-            const seatIds = JSON.parse(localStorage.getItem('lastBoughtSeatId')) || [];
-            const seatTexts = JSON.parse(localStorage.getItem('lastBoughtText')) || [];
-            const perf = localStorage.getItem('lastBoughtPerformance');
-            const totalPrice = localStorage.getItem('lastBoughtPrice');
+            
+             // ===== ПОЛУЧЕНИЕ ДАННЫХ О КУПЛЕННЫХ МЕСТАХ =====
+            let myTickets = JSON.parse(localStorage.getItem('userTickets')) || []; // Массив всех билетов пользователя
+            const seatIds = JSON.parse(localStorage.getItem('lastBoughtSeatId')) || []; // ID каждого выбранного места
+            const seatTexts = JSON.parse(localStorage.getItem('lastBoughtText')) || []; // Текстовое описание мест
+            const perf = localStorage.getItem('lastBoughtPerformance'); // ID спектакля
+            const totalPrice = localStorage.getItem('lastBoughtPrice'); // Общая сумма за все места
+            
+            // ===== РАСЧЕТ ЦЕНЫ ЗА ОДНО МЕСТО =====
+            // это упрощенный расчет, если места имели разные цены, нужен иной подход!!!!
             const singlePrice = seatIds.length > 0 ? Math.round(totalPrice / seatIds.length) : 0;
             
+            // ===== ЦИКЛ ДЛЯ СОЗДАНИЯ БИЛЕТА НА КАЖДОЕ МЕСТО =====
+            //Для каждого выбранного места создаем отдельный объект билета, позволяет пользователю пересадить/передать билет конкретного места другому
             seatIds.forEach((id, index) => {
-                const currentSeatInfo = seatTexts[index] || "Обране місце";
+                const currentSeatInfo = seatTexts[index] || "Обране місце"; // Подставляем описание места или значение по умолчанию
                 const newTicket = {
                     id: Math.floor(Math.random() * 1000000),
                     ownerEmail: currentUser.email,
@@ -117,7 +138,10 @@
                 myTickets.push(newTicket);
             });
             
+            // Сохраняем обновленный массив билетов, чтобы они остались даже после перезагрузки страницы
             localStorage.setItem('userTickets', JSON.stringify(myTickets));
+            
+            // Отправляем пользователя обратно в его аккаунт, где он сможет увидеть купленные билеты
             window.location.href = 'account.html';
         });
     </script>
