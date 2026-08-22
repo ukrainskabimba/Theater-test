@@ -23,7 +23,20 @@ const translations = {
         swan_title: "Лебедине Озеро",
         swan_desc: "Вічна класика світового балету. Історія про кохання принца Зігфріда та прекрасної Одетти, завороженої злим магом.",
         about_show: "Про виставу",
-        book_tickets: "Замовити квитки"
+        book_tickets: "Замовити квитки",
+        choose_performance_title: "Оберіть виставу",
+        select_event_default: "Оберіть подію зі списку",
+        choose_date: "Оберіть дату:",
+        choose_time: "Оберіть час:",
+        stage_label: "СЦЕНА",
+        left_side: "ЛІВА СТОРОНА",
+        right_side: "ПРАВА СТОРОНА",
+        your_seat: "Ваше місце:",
+        not_selected: "не обрано",
+        to_pay: "До сплати:",
+        currency: "грн",
+        book_ticket_btn: "Забронювати квиток"
+
     },
     en: {
         nav_home: "Home",
@@ -48,7 +61,19 @@ const translations = {
         swan_title: "Swan Lake",
         swan_desc: "The eternal classic of world ballet. The story of Prince Siegfried's love for the beautiful Odette, enchanted by an evil sorcerer.",
         about_show: "About the show",
-        book_tickets: "Book tickets"
+        book_tickets: "Book tickets",
+        choose_performance_title: "Choose a performance",
+        select_event_default: "Select an event from the list",
+        choose_date: "Choose date:",
+        choose_time: "Choose time:",
+        stage_label: "STAGE",
+        left_side: "LEFT SIDE",
+        right_side: "RIGHT SIDE",
+        your_seat: "Your seat:",
+        not_selected: "not selected",
+        to_pay: "Total:",
+        currency: "UAH",
+        book_ticket_btn: "Book ticket"
     }
 };
 

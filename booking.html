@@ -12,57 +12,63 @@
         <nav>
             <div class="logo">Aura <span>Dramatica</span></div>
             <ul>
-                <li><a href="index.html">Головна</a></li>
-                <li><a href="booking.html" class="active">Зал та квитки</a></li>
-                <li><a href="repertoire.html">Репертуар</a></li>
-                <li><a href="account.html">Мій кабінет</a></li>
+                <li><a href="index.html" data-i18n="nav_home">Головна</a></li>
+                <li><a href="booking.html" class="active" data-i18n="nav_booking">Зал та квитки</a></li>
+                <li><a href="repertoire.html" data-i18n="nav_repertoire">Репертуар</a></li>
+                <li><a href="account.html" data-i18n="nav_account">Мій кабінет</a></li>
             </ul>
+            <!-- Переключатель языков -->
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="uk" onclick="setLanguage('uk')">UA</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            </div>
         </nav>
     </header>
     <main class="booking-container">
         <div class="selection-header" style="text-align: center; padding: 40px 0 10px;">
-            <h2 id="performance-title" class="page-title" style="padding: 0; margin-bottom: 15px;">Оберіть виставу</h2>
+            <h2 id="performance-title" class="page-title" data-i18n="choose_performance_title" style="padding: 0; margin-bottom: 15px;">Оберіть виставу</h2>
             <select id="performance-select" style="padding: 12px 25px; background: rgba(255,255,255,0.1); color: var(--gold); border: 1px solid var(--gold); border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; outline: none;">
-                <option value="" style="background: var(--velvet);">Оберіть подію зі списку</option>
-                <option value="chicago" style="background: var(--velvet);">Чикаго</option>
-                <option value="phantom" style="background: var(--velvet);">Привид Опери</option>
-                <option value="swan" style="background: var(--velvet);">Лебедине Озеро</option>
+                <option value="" style="background: var(--velvet);" data-i18n="select_event_default">Оберіть подію зі списку</option>
+                <option value="chicago" style="background: var(--velvet);" data-i18n="chicago_title">Чикаго</option>
+                <option value="phantom" style="background: var(--velvet);" data-i18n="phantom_title">Привид Опери</option>
+                <option value="swan" style="background: var(--velvet);" data-i18n="swan_title">Лебедине Озеро</option>
             </select>
         </div>
 
         <div id="date-selection" style="text-align: center; margin-bottom: 15px; display: none;">
-            <p style="color: var(--white); font-family: 'Montserrat', sans-serif; margin-bottom: 8px;">Оберіть дату:</p>
+            <p style="color: var(--white); font-family: 'Montserrat', sans-serif; margin-bottom: 8px;" data-i18n="choose_date">Оберіть дату:</p>
             <div id="date-buttons-container" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;"></div>
         </div>
 
         <div id="time-selection" style="text-align: center; margin-bottom: 25px; display: none;">
-            <p style="color: var(--white); font-family: 'Montserrat', sans-serif; margin-bottom: 8px;">Оберіть час:</p>
+            <p style="color: var(--white); font-family: 'Montserrat', sans-serif; margin-bottom: 8px;" data-i18n="choose_time">Оберіть час:</p>
             <div id="time-buttons-container" style="display: flex; justify-content: center; gap: 10px;"></div>
         </div>
 
         <div id="hall-wrapper" style="opacity: 0.2; pointer-events: none; transition: 0.6s all ease;">
             <div class="stage-container">
-                <span class="stage-label">СЦЕНА</span>
+                <span class="stage-label" data-i18n="stage_label">СЦЕНА</span>
                 <div class="stage"></div>
             </div>
             <div class="theater-map">
-                <div class="side-label left">ЛІВА СТОРОНА</div>
+                <div class="side-label left" data-i18n="left_side">ЛІВА СТОРОНА</div>
                 <div class="sector side-sector" id="left-side"></div>
                 <div class="sector main-sector" id="parter"></div>
                 <div class="sector side-sector" id="right-side"></div>
-                <div class="side-label right">ПРАВА СТОРОНА</div>
+                <div class="side-label right" data-i18n="right_side">ПРАВА СТОРОНА</div>
             </div>
             <div class="selection-info">
-                <p>Ваше місце: <span id="selected-seat" style="color: var(--gold); font-weight: bold;">не обрано</span></p>
-                <p>До сплати: <span id="seat-price" style="color: var(--gold); font-weight: bold;">0</span> грн</p>
+                <p><span data-i18n="your_seat">Ваше місце:</span> <span id="selected-seat" data-i18n="not_selected" style="color: var(--gold); font-weight: bold;">не обрано</span></p>
+                <p><span data-i18n="to_pay">До сплати:</span> <span id="seat-price" style="color: var(--gold); font-weight: bold;">0</span> <span data-i18n="currency">грн</span></p>
                 <br>
-                <button class="cta-button" id="book-btn">Забронювати квиток</button>
+                <button class="cta-button" id="book-btn" data-i18n="book_ticket_btn">Забронювати квиток</button>
             </div>
         </div>
     </main>
     <footer>
         <p>&copy; 2026 Театр "Aura Dramatica".</p>
     </footer>
+    <script src="lang.js"></script>
     <script src="script.js"></script>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
