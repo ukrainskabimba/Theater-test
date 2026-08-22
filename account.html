@@ -11,85 +11,116 @@
         <nav>
             <div class="logo">AURA <span>DRAMATICA</span></div>
             <ul>
-                <li><a href="index.html">Головна</a></li>
-                <li><a href="repertoire.html">Репертуар</a></li>
-                <li><a href="booking.html">Забронювати</a></li>
-                <li><a href="account.html" class="active">Мій кабінет</a></li>
+                <li><a href="index.html" data-i18n="nav_home">Головна</a></li>
+                <li><a href="repertoire.html" data-i18n="nav_repertoire">Репертуар</a></li>
+                <li><a href="booking.html" data-i18n="nav_booking">Забронювати</a></li>
+                <li><a href="account.html" class="active" data-i18n="nav_account">Мій кабінет</a></li>
             </ul>
+            <!-- Переключатель языков -->
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="uk" onclick="setLanguage('uk'); updateAccountDynamic();">UA</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en'); updateAccountDynamic();">EN</button>
+            </div>
         </nav>
     </header>
     <main class="container account-main">
         <div id="auth-block" class="auth-container">
-            <h2 class="card-title">Вхід до системи</h2>
+            <h2 class="card-title" data-i18n="login_title">Вхід до системи</h2>
             <div class="auth-tabs">
-                <button id="tab-login" class="auth-tab active" onclick="toggleAuth('login')">Увійти</button>
-                <button id="tab-signup" class="auth-tab" onclick="toggleAuth('signup')">Реєстрація</button>
+                <button id="tab-login" class="auth-tab active" onclick="toggleAuth('login')" data-i18n="tab_login">Увійти</button>
+                <button id="tab-signup" class="auth-tab" onclick="toggleAuth('signup')" data-i18n="tab_signup">Реєстрація</button>
             </div>
             <form id="auth-form" class="auth-form">
-                <input type="text" id="username" placeholder="Ваше ім'я" required>
-                <input type="email" id="useremail" placeholder="Електронна пошта" required>
-                <button type="submit" id="auth-submit-btn">Увійти</button>
+                <!-- Добавлен data-i18n-placeholder -->
+                <input type="text" id="username" data-i18n-placeholder="placeholder_name" placeholder="Ваше ім'я" required>
+                <input type="email" id="useremail" data-i18n-placeholder="placeholder_email" placeholder="Електронна пошта" required>
+                <button type="submit" id="auth-submit-btn" data-i18n="tab_login">Увійти</button>
             </form>
             <p id="auth-msg" class="auth-error"></p>
         </div>
+        
         <div id="cabinet-block" style="display: none;">
             <div class="cabinet-header">
                 <h1 id="welcome-user" class="page-title">Вітаємо!</h1>
-                <button onclick="logout()" class="logout-btn">Вийти з аккаунту</button>
+                <button onclick="logout()" class="logout-btn" data-i18n="logout_btn">Вийти з аккаунту</button>
             </div>
             <div class="account-grid">
                 <section class="profile-card">
-                    <h3 class="card-title">Ваш Профіль</h3>
+                    <h3 class="card-title" data-i18n="profile_title">Ваш Профіль</h3>
                     <div class="info-group">
-                        <label>Ім'я користувача</label>
+                        <label data-i18n="profile_name_label">Ім'я користувача</label>
                         <p id="profile-name">-</p>
                     </div>
                     <div class="info-group">
-                        <label>Електронна пошта</label>
+                        <label data-i18n="profile_email_label">Електронна пошта</label>
                         <p id="profile-email">-</p>
                     </div>
                 </section>
                 <section class="tickets-card">
                     <div class="tickets-card-header">
-                        <h3 class="card-title" style="margin-bottom: 0;">Мої замовлення</h3>
+                        <h3 class="card-title" style="margin-bottom: 0;" data-i18n="my_orders_title">Мої замовлення</h3>
                         <div id="cancel-all-container"></div>
                     </div>
                     <div id="tickets-list"></div>
                 </section>
             </div>
         </div>
+        
         <div id="custom-confirm" class="modal-overlay" style="display: none;">
             <div class="modal-content">
-                <h3 id="modal-title">Скасування бронювання</h3>
-                <p id="modal-text">Ви впевнені, що хочете скасувати цей квиток? Це место знову стане доступним для вибору.</p>
+                <h3 id="modal-title" data-i18n="modal_cancel_title">Скасування бронювання</h3>
+                <p id="modal-text" data-i18n="modal_cancel_text">Ви впевнені, що хочете скасувати цей квиток?</p>
                 <div class="modal-buttons">
-                    <button id="confirm-yes" class="modal-btn btn-danger">Так, скасувати</button>
-                    <button id="confirm-no" class="modal-btn btn-secondary">Залишити</button>
+                    <button id="confirm-yes" class="modal-btn btn-danger" data-i18n="modal_yes">Так, скасувати</button>
+                    <button id="confirm-no" class="modal-btn btn-secondary" data-i18n="modal_no">Залишити</button>
                 </div>
             </div>
         </div>
     </main>
+    
+    <script src="lang.js"></script>
     <script>
         let currentMode = 'login';
         let deleteMode = 'single';
         let ticketToDelete = null;
         const authForm = document.getElementById('auth-form');
+
+        // Вспомогательная функция для обновления скриптовых элементов при смене языка
+        function updateAccountDynamic() {
+            const lang = localStorage.getItem('app_lang') || 'uk';
+            const t = translations[lang];
+            
+            document.getElementById('auth-submit-btn').innerText = currentMode === 'login' ? t.tab_login : t.tab_signup;
+            
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                document.getElementById('welcome-user').innerText = `${t.welcome_user}, ${user.name}!`;
+                renderTickets(); // Перерендериваем билеты на новом языке
+            }
+        }
+
         function toggleAuth(mode) {
             currentMode = mode;
             document.getElementById('tab-login').classList.toggle('active', mode === 'login');
             document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
-            document.getElementById('auth-submit-btn').innerText = mode === 'login' ? 'Увійти' : 'Зареєструватися';
+            
+            const lang = localStorage.getItem('app_lang') || 'uk';
+            document.getElementById('auth-submit-btn').innerText = translations[lang][mode === 'login' ? 'tab_login' : 'tab_signup'];
             document.getElementById('auth-msg').innerText = '';
         }
+
         authForm.onsubmit = function(e) {
             e.preventDefault();
             const name = document.getElementById('username').value;
             const email = document.getElementById('useremail').value;
             const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            const lang = localStorage.getItem('app_lang') || 'uk';
+            const t = translations[lang];
+
             if (currentMode === 'signup') {
                 const userExists = users.find(u => u.email === email);
                 if (userExists) {
-                    document.getElementById('auth-msg').innerText = 'Ця пошта вже зареєстрована!';
+                    document.getElementById('auth-msg').innerText = t.auth_err_exists;
                 } else {
                     const newUser = { name, email };
                     users.push(newUser);
@@ -103,86 +134,106 @@
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     checkAuth();
                 } else {
-                    document.getElementById('auth-msg').innerText = 'Упс, ви не зареєстровані або дані невірні!';
+                    document.getElementById('auth-msg').innerText = t.auth_err_notfound;
                 }
             }
         };
+
         function logout() {
             localStorage.removeItem('currentUser');
             location.reload();
         }
+
         function checkAuth() {
             const user = JSON.parse(localStorage.getItem('currentUser'));
             if (user) {
                 document.getElementById('auth-block').style.display = 'none';
                 document.getElementById('cabinet-block').style.display = 'block';
-                document.getElementById('welcome-user').innerText = `Вітаємо, ${user.name}!`;
+                
+                const lang = localStorage.getItem('app_lang') || 'uk';
+                document.getElementById('welcome-user').innerText = `${translations[lang].welcome_user}, ${user.name}!`;
                 document.getElementById('profile-name').innerText = user.name;
                 document.getElementById('profile-email').innerText = user.email;
                 renderTickets();
             }
         }
+
         function renderTickets() {
             const list = document.getElementById('tickets-list');
             const cancelAllContainer = document.getElementById('cancel-all-container');
             const tickets = JSON.parse(localStorage.getItem('userTickets')) || [];
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const perfNames = { chicago: "Мюзикл 'Чикаго'", phantom: "Привид Опери", swan: "Лебедине озеро" };
-            const userActiveTickets = tickets.filter(t => t.ownerEmail === currentUser.email);
+            
+            const lang = localStorage.getItem('app_lang') || 'uk';
+            const t = translations[lang];
+            const perfNames = { chicago: t.chicago_title, phantom: t.phantom_title, swan: t.swan_title };
+            
+            const userActiveTickets = tickets.filter(tkt => tkt.ownerEmail === currentUser.email);
+            
             if (userActiveTickets.length === 0) {
-                list.innerHTML = "<p class='empty-msg'>У вас поки немає придбаних квитків.</p>";
+                list.innerHTML = `<p class='empty-msg'>${t.empty_tickets}</p>`;
                 if (cancelAllContainer) cancelAllContainer.innerHTML = ''; 
                 return;
             }
+
             if (cancelAllContainer) {
                 cancelAllContainer.innerHTML = `
                     <button class="cancel-btn" onclick="openCancelAllModal()" 
                             style="background: transparent; border: 1px solid #ff6b6b; color: #ff6b6b; padding: 6px 12px; font-size: 11px; cursor: pointer; border-radius: 4px; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-weight: bold;">
-                        Скасувати всі
+                        ${t.cancel_all_btn}
                     </button>
                 `;
             }
+
             const reversedTickets = [...tickets].reverse();
-            list.innerHTML = reversedTickets.map((t) => {
-                const realIndex = tickets.indexOf(t);
-                if (t.ownerEmail !== currentUser.email) return '';
-                const displayInfo = t.text || t.seatText || t.seat || "Місце успішно заброньовано";
+            list.innerHTML = reversedTickets.map((ticket) => {
+                const realIndex = tickets.indexOf(ticket);
+                if (ticket.ownerEmail !== currentUser.email) return '';
+                const displayInfo = ticket.text || ticket.seatText || ticket.seat || t.ticket_success;
+                
                 return `
                 <div class="ticket-item">
                     <div class="ticket-meta">
-                        <h4>${perfNames[t.perf] || t.perf}</h4>
+                        <h4>${perfNames[ticket.perf] || ticket.perf}</h4>
                         <span style="font-size: 13px; color: #ccc; font-family: 'Montserrat', sans-serif;">${displayInfo}</span>
                     </div>
                     <div class="ticket-actions" style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
-                        <div class="status-badge">Квиток №${t.id}</div>
+                        <div class="status-badge">${t.ticket_number}${ticket.id}</div>
                         <button class="cancel-btn" onclick="openConfirmModal(${realIndex})" 
                                 style="background: transparent; border: 1px solid #ff6b6b; color: #ff6b6b; padding: 4px 8px; font-size: 10px; cursor: pointer; border-radius: 3px; text-transform: uppercase;">
-                            Скасувати
+                            ${t.cancel_btn}
                         </button>
                     </div>
                 </div>`;
             }).join('');
         }
+
         function openConfirmModal(index) {
             deleteMode = 'single';
             ticketToDelete = index;
-            document.getElementById('modal-title').innerText = "Скасування бронювання";
-            document.getElementById('modal-text').innerText = "Ви впевнені, що хочете скасувати цей квиток? Це місце знову стане доступним для вибору.";
+            const lang = localStorage.getItem('app_lang') || 'uk';
+            document.getElementById('modal-title').innerText = translations[lang].modal_cancel_title;
+            document.getElementById('modal-text').innerText = translations[lang].modal_cancel_text;
             document.getElementById('custom-confirm').style.display = 'flex';
         }
+
         function openCancelAllModal() {
             deleteMode = 'all';
-            document.getElementById('modal-title').innerText = "Скасування ВСІХ бронювань";
-            document.getElementById('modal-text').innerText = "Ви впевнені, що хочете скасувати ВСІ ваші квитки? Усі обрані місця в залі знову стануть вільними.";
+            const lang = localStorage.getItem('app_lang') || 'uk';
+            document.getElementById('modal-title').innerText = translations[lang].modal_cancel_all_title;
+            document.getElementById('modal-text').innerText = translations[lang].modal_cancel_all_text;
             document.getElementById('custom-confirm').style.display = 'flex';
         }
+
         function closeModal() {
             document.getElementById('custom-confirm').style.display = 'none';
             ticketToDelete = null;
         }
+
         document.getElementById('confirm-yes').onclick = function() {
             const tickets = JSON.parse(localStorage.getItem('userTickets')) || [];
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
             if (deleteMode === 'single' && ticketToDelete !== null) {
                 tickets.splice(ticketToDelete, 1);
                 localStorage.setItem('userTickets', JSON.stringify(tickets));
@@ -193,6 +244,7 @@
             renderTickets();
             closeModal();
         };
+
         document.getElementById('confirm-no').onclick = closeModal;
         window.onload = checkAuth;
     </script>

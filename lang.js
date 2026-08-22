@@ -35,7 +35,31 @@ const translations = {
         not_selected: "не обрано",
         to_pay: "До сплати:",
         currency: "грн",
-        book_ticket_btn: "Забронювати квиток"
+        book_ticket_btn: "Забронювати квиток",
+        login_title: "Вхід до системи",
+        tab_login: "Увійти",
+        tab_signup: "Реєстрація",
+        placeholder_name: "Ваше ім'я",
+        placeholder_email: "Електронна пошта",
+        logout_btn: "Вийти з аккаунту",
+        profile_title: "Ваш Профіль",
+        profile_name_label: "Ім'я користувача",
+        profile_email_label: "Електронна пошта",
+        my_orders_title: "Мої замовлення",
+        welcome_user: "Вітаємо",
+        auth_err_exists: "Ця пошта вже зареєстрована!",
+        auth_err_notfound: "Упс, ви не зареєстровані або дані невірні!",
+        empty_tickets: "У вас поки немає придбаних квитків.",
+        cancel_all_btn: "Скасувати всі",
+        ticket_success: "Місце успішно заброньовано",
+        ticket_number: "Квиток №",
+        cancel_btn: "Скасувати",
+        modal_cancel_title: "Скасування бронювання",
+        modal_cancel_text: "Ви впевнені, що хочете скасувати цей квиток? Це місце знову стане доступним для вибору.",
+        modal_cancel_all_title: "Скасування ВСІХ бронювань",
+        modal_cancel_all_text: "Ви впевнені, що хочете скасувати ВСІ ваші квитки? Усі обрані місця в залі знову стануть вільними.",
+        modal_yes: "Так, скасувати",
+        modal_no: "Залишити"
 
     },
     en: {
@@ -73,7 +97,31 @@ const translations = {
         not_selected: "not selected",
         to_pay: "Total:",
         currency: "UAH",
-        book_ticket_btn: "Book ticket"
+        book_ticket_btn: "Book ticket",
+        login_title: "System Login",
+        tab_login: "Login",
+        tab_signup: "Sign Up",
+        placeholder_name: "Your name",
+        placeholder_email: "Email address",
+        logout_btn: "Logout",
+        profile_title: "Your Profile",
+        profile_name_label: "Username",
+        profile_email_label: "Email",
+        my_orders_title: "My Orders",
+        welcome_user: "Welcome",
+        auth_err_exists: "This email is already registered!",
+        auth_err_notfound: "Oops, you are not registered or the data is incorrect!",
+        empty_tickets: "You have no purchased tickets yet.",
+        cancel_all_btn: "Cancel all",
+        ticket_success: "Seat successfully booked",
+        ticket_number: "Ticket #",
+        cancel_btn: "Cancel",
+        modal_cancel_title: "Cancel Booking",
+        modal_cancel_text: "Are you sure you want to cancel this ticket? The seat will become available again.",
+        modal_cancel_all_title: "Cancel ALL Bookings",
+        modal_cancel_all_text: "Are you sure you want to cancel ALL your tickets? All selected seats will become available again.",
+        modal_yes: "Yes, cancel",
+        modal_no: "Keep it"
     }
 };
 
@@ -81,11 +129,19 @@ const translations = {
 function setLanguage(lang) {
     localStorage.setItem('app_lang', lang);
     
-    // Переводим все элементы с атрибутом data-i18n
+    // Перевод обычного текста с атрибутом data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
             el.innerText = translations[lang][key];
+        }
+    });
+    
+    // Перевод обычного текста с атрибутом data-i18n-placeholder
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang] && translations[lang][key]) {
+            el.placeholder = translations[lang][key];
         }
     });
 
