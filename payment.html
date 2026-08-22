@@ -13,8 +13,10 @@
         <form class="payment-form" id="payment-form">
             <label>Ім'я та Прізвище</label>
             <input type="text" placeholder="Введіть ваше ім'я" required>
-            <label>Електронна пошта</label>
-            <input type="email" placeholder="example@mail.com" required>
+            <div id="email-group">
+                <label>Електронна пошта</label>
+                <input type="email" id="user-email" placeholder="example@mail.com" required>
+            </div>
             <label>Номер картки</label>
             <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="16" required>
             <div class="cvv-row">
@@ -40,14 +42,26 @@
         const payBtn = document.getElementById('pay-btn');
         const backBtn = document.getElementById('back-to-hall-btn');
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const emailGroup = document.getElementById('email-group');
+        const emailInput = document.getElementById('user-email');
+
+        if (currentUser) {
+            emailGroup.style.display = 'none';
+            emailInput.removeAttribute('required');
+            emailInput.value = currentUser.email;
+        } 
+        
         const onlyNumbers = (e) => {
             e.target.value = e.target.value.replace(/\D/g, ''); 
         };
+        
         cardInput.addEventListener('input', onlyNumbers);
         cvvInput.addEventListener('input', onlyNumbers);
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             statusMsg.innerText = "";
+    
             if (cardInput.value.length < 16) {
                 statusMsg.innerText = "Номер картки має містити 16 цифр!";
                 statusMsg.style.color = "#ff4d4d";
@@ -58,23 +72,27 @@
                 statusMsg.style.color = "#ff4d4d";
                 return;
             }
+    
             statusMsg.innerText = "Оплата пройшла успішно! Квиток надіслано на вашу пошту.";
             statusMsg.style.color = "#f0d98f";
             payBtn.style.display = "none";
             backBtn.style.display = "block";
         });
+
         backBtn.addEventListener('click', () => {
             if (!currentUser) {
                 alert("Помилка: користувач не знайдений.");
                 window.location.href = 'account.html';
                 return;
             }
+    
             let myTickets = JSON.parse(localStorage.getItem('userTickets')) || [];
             const seatIds = JSON.parse(localStorage.getItem('lastBoughtSeatId')) || [];
             const seatTexts = JSON.parse(localStorage.getItem('lastBoughtText')) || [];
             const perf = localStorage.getItem('lastBoughtPerformance');
             const totalPrice = localStorage.getItem('lastBoughtPrice');
             const singlePrice = seatIds.length > 0 ? Math.round(totalPrice / seatIds.length) : 0;
+            
             seatIds.forEach((id, index) => {
                 const currentSeatInfo = seatTexts[index] || "Обране місце";
                 const newTicket = {
@@ -88,9 +106,64 @@
                 };
                 myTickets.push(newTicket);
             });
+            
             localStorage.setItem('userTickets', JSON.stringify(myTickets));
             window.location.href = 'account.html';
-        });
-    </script>
-</body>
-</html>
+});
+//         else {
+//             emailGroup.style.display = 'block';
+//         }
+//         const onlyNumbers = (e) => {
+//             e.target.value = e.target.value.replace(/\D/g, ''); 
+//         };
+//         cardInput.addEventListener('input', onlyNumbers);
+//         cvvInput.addEventListener('input', onlyNumbers);
+//         form.addEventListener('submit', (e) => {
+//             e.preventDefault();
+//             statusMsg.innerText = "";
+//             if (cardInput.value.length < 16) {
+//                 statusMsg.innerText = "Номер картки має містити 16 цифр!";
+//                 statusMsg.style.color = "#ff4d4d";
+//                 return;
+//             }
+//             if (cvvInput.value.length < 3) {
+//                 statusMsg.innerText = "CVV код має містити 3 цифри!";
+//                 statusMsg.style.color = "#ff4d4d";
+//                 return;
+//             }
+//             statusMsg.innerText = "Оплата пройшла успішно! Квиток надіслано на вашу пошту.";
+//             statusMsg.style.color = "#f0d98f";
+//             payBtn.style.display = "none";
+//             backBtn.style.display = "block";
+//         });
+//         backBtn.addEventListener('click', () => {
+//             if (!currentUser) {
+//                 alert("Помилка: користувач не знайдений.");
+//                 window.location.href = 'account.html';
+//                 return;
+//             }
+//             let myTickets = JSON.parse(localStorage.getItem('userTickets')) || [];
+//             const seatIds = JSON.parse(localStorage.getItem('lastBoughtSeatId')) || [];
+//             const seatTexts = JSON.parse(localStorage.getItem('lastBoughtText')) || [];
+//             const perf = localStorage.getItem('lastBoughtPerformance');
+//             const totalPrice = localStorage.getItem('lastBoughtPrice');
+//             const singlePrice = seatIds.length > 0 ? Math.round(totalPrice / seatIds.length) : 0;
+//             seatIds.forEach((id, index) => {
+//                 const currentSeatInfo = seatTexts[index] || "Обране місце";
+//                 const newTicket = {
+//                     id: Math.floor(Math.random() * 1000000),
+//                     ownerEmail: currentUser.email,
+//                     perf: perf,
+//                     seat: currentSeatInfo,
+//                     seatId: id,
+//                     date: new Date().toLocaleDateString('uk-UA'),
+//                     price: singlePrice
+//                 };
+//                 myTickets.push(newTicket);
+//             });
+//             localStorage.setItem('userTickets', JSON.stringify(myTickets));
+//             window.location.href = 'account.html';
+//         });
+//     </script>
+// </body>
+// </html>
