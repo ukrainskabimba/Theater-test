@@ -68,10 +68,35 @@ nav ul li a:hover, nav ul li a.active {
     border-bottom: 2px solid var(--gold);
 }
 
+.lang-switcher {
+    margin-left: 20px;
+    display: flex;
+    gap: 8px;
+}
+
+.lang-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.lang-btn:hover {
+    background-color: var(--gold);
+    color: var(--velvet);
+}
+
 .lang-btn.active-lang {
     background-color: var(--gold) !important;
     color: var(--velvet) !important;
-    font-weight: bold;
+    box-shadow: 0 0 10px rgba(240, 217, 143, 0.4);
 }
 
 .hero {
