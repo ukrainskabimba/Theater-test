@@ -12,10 +12,10 @@
         <nav>
             <div class="logo">Aura <span>Dramatica</span></div>
             <ul>
-                <li><a href="index.html" class="active">Головна</a></li>
-                <li><a href="booking.html">Зал та квитки</a></li>
-                <li><a href="repertoire.html">Репертуар</a></li>
-                <li><a href="account.html">Мій кабінет</a></li>
+                <li><a href="index.html" class="active" data-i18n="nav_home">Головна</a></li>
+                <li><a href="booking.html" data-i18n="nav_booking">Зал та квитки</a></li>
+                <li><a href="repertoire.html" data-i18n="nav_repertoire">Репертуар</a></li>
+                <li><a href="account.html" data-i18n="nav_account">Мій кабінет</a></li>
             </ul>
             <!-- Кнопки переключения языка -->
             <div class="lang-switcher" style="margin-left: 20px; display: flex; gap: 5px;">
@@ -27,27 +27,27 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>Магія сцени у кожному подиху</h1>
-                <p>Ласкаво просимо до найвишуканішого театру міста. Відчуйте класику крізь призму сучасності.</p>
-                <a href="repertoire.html" class="cta-button">Обрати виставу</a>
+                <h1 data-i18n="hero_title">Магія сцени у кожному подиху</h1>
+                <p data-i18n="hero_subtitle">Ласкаво просимо до найвишуканішого театру міста. Відчуйте класику крізь призму сучасності.</p>
+                <a href="repertoire.html" class="cta-button" data-i18n="hero_btn">Обрати виставу</a>
             </div>
         </section>
         <section class="info-section">
             <div class="info-container">
-                <h2 class="section-title">Про наш театр</h2>
-                <p class="section-text">
+                <h2 class="section-title" data-i18n="about_title">Про наш театр</h2>
+                <p class="section-text" data-i18n="about_text_1">
                     "Aura Dramatica" — це місце, де час зупиняється, а емоції набувають справжньої глибини. 
                     Ми створили цей простір для поціновувачів високого мистецтва, які шукають не просто виставу, 
                     а щире переживання та естетичну насолоду. Наша сцена поєднує велич опери, 
                     драматизм мюзиклу та витонченість класичного балету.
                 </p>
-                <p class="section-text">
+                <p class="section-text" data-i18n="about_text_2">
                     Кожен сезон ми готуємо для вас особливу програму, де світові шедеври отримують нове дихання 
                     завдяки таланту наших акторів та інноваціям у театральному дизайні.
                 </p>
                 <div class="contact-block">
-                    <h3 class="gold-text">Наші контакти</h3>
-                    <p>м. Київ, вул. Театральна, 12</p>
+                    <h3 class="gold-text" data-i18n="contacts_title">Наші контакти</h3>
+                    <p data-i18n="address">м. Київ, вул. Театральна, 12</p>
                     <p>Телефон: +38 (044) 123-45-67</p>
                     <p>Email: auradramatica.info@gmail.com</p>
                 </div>
@@ -57,7 +57,7 @@
     <footer>
         <p>&copy; 2026 Театр "Aura Dramatica".</p>
     </footer>
-    <!-- Подключение скрипта для управления языком -->
+    <!-- Подключаем скрипт мультиязычности первым -->
     <script src="lang.js"></script>
 </body>
 </html>
