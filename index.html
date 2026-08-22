@@ -12,21 +12,22 @@
         <nav>
             <div class="logo">Aura <span>Dramatica</span></div>
             <ul>
+                <!-- Добавили data-i18n для ссылок навигации -->
                 <li><a href="index.html" class="active" data-i18n="nav_home">Головна</a></li>
                 <li><a href="booking.html" data-i18n="nav_booking">Зал та квитки</a></li>
                 <li><a href="repertoire.html" data-i18n="nav_repertoire">Репертуар</a></li>
                 <li><a href="account.html" data-i18n="nav_account">Мій кабінет</a></li>
             </ul>
-            <!-- Кнопки переключения языка -->
             <div class="lang-switcher" style="margin-left: 20px; display: flex; gap: 5px;">
-                <button class="lang-btn" data-lang="uk" onclick="setLanguage('uk')" style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding: 4px 8px; cursor:pointer; border-radius:3px;">UA</button>
-                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')" style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding: 4px 8px; cursor:pointer; border-radius:3px;">EN</button>
+                <button class="lang-btn" data-lang="uk" onclick="setLanguage('uk')">UA</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
             </div>
         </nav>
     </header>
     <main>
         <section class="hero">
             <div class="hero-content">
+                <!-- Добавили data-i18n для заголовка, подзаголовка и кнопки -->
                 <h1 data-i18n="hero_title">Магія сцени у кожному подиху</h1>
                 <p data-i18n="hero_subtitle">Ласкаво просимо до найвишуканішого театру міста. Відчуйте класику крізь призму сучасності.</p>
                 <a href="repertoire.html" class="cta-button" data-i18n="hero_btn">Обрати виставу</a>
@@ -57,7 +58,6 @@
     <footer>
         <p>&copy; 2026 Театр "Aura Dramatica".</p>
     </footer>
-    <!-- Подключаем скрипт мультиязычности первым -->
     <script src="lang.js"></script>
 </body>
 </html>
