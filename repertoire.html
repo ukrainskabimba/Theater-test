@@ -16,21 +16,26 @@
                 <li><a href="repertoire.html" class="active">Репертуар</a></li>
                 <li><a href="account.html">Мій кабінет</a></li>
             </ul>
+            <div class="lang-switcher">
+                <button class="lang-btn" data-lang="uk" onclick="setLanguage('uk')">UA</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            </div>
         </nav>
     </header>
     <main class="repertoire-page-body">
-        <h2 class="page-title">Репертуар театру</h2>
+        <h2 class="page-title" data-i18n="repertoire_title">Репертуар театру</h2>
         <div class="repertoire-container">
+
     <div class="performance-card">
         <div class="card-inner">
             <div class="card-front">
                 <img src="chicago.webp" alt="Чикаго">
-                <h3>Чикаго</h3>
-                <a href="booking.html?performance=chicago" class="cta-button">Замовити квитки</a>
+                <h3 data-i18n="chicago_title">Чикаго</h3>
+                <a href="booking.html?performance=chicago" class="cta-button" data-i18n="book_tickets">Замовити квитки</a>
             </div>
             <div class="card-back">
-                <h3>Про виставу</h3>
-                <p>Легендарний мюзикл про джаз, пристрасть та правосуддя. Історія Роксі Гарт, яка мріє про славу будь-якою ціною.</p>
+                <h3 data-i18n="about_show">Про виставу</h3>
+                <p data-i18n="chicago_desc">Легендарний мюзикл про джаз, пристрасть та правосуддя. Історія Роксі Гарт, яка мріє про славу будь-якою ціною.</p>
             </div>
         </div>
     </div>
@@ -39,12 +44,12 @@
         <div class="card-inner">
             <div class="card-front">
                 <img src="phantom.jpg" alt="Привид Опери">
-                <h3>Привид Опери</h3>
-                <a href="booking.html?performance=phantom" class="cta-button">Замовити квитки</a>
+                <h3 data-i18n="phantom_title">Привид Опери</h3>
+                <a href="booking.html?performance=phantom" class="cta-button" data-i18n="book_tickets">Замовити квитки</a>
             </div>
             <div class="card-back">
-                <h3>Про виставу</h3>
-                <p>Містична історія кохання, що розгортається в підземеллях Паризької опери. Геній музики та його прекрасна учениця Крістін.</p>
+                <h3 data-i18n="about_show">Про виставу</h3>
+                <p data-i18n="phantom_desc">Містична історія кохання, що розгортається в підземеллях Паризької опери. Геній музики та його прекрасна учениця Крістін.</p>
             </div>
         </div>
     </div>
@@ -52,13 +57,12 @@
         <div class="card-inner">
             <div class="card-front">
                 <img src="swan.webp" alt="Лебедине Озеро">
-                <h3>Лебедине Озеро</h3>
-                <a href="booking.html?performance=swan" class="cta-button">Замовити квитки</a>
+                <h3 data-i18n="swan_title">Лебедине Озеро</h3>
+                <a href="booking.html?performance=swan" class="cta-button" data-i18n="book_tickets">Замовити квитки</a>
             </div>
             <div class="card-back">
-                <h3>Про виставу</h3>
-                <p>Вічна класика світового балету. Історія про кохання принца Зігфріда та прекрасної Одетти, завороженої злим магом.</p>
-                </div>
+                <h3 data-i18n="about_show">Про виставу</h3>
+                <p data-i18n="swan_desc">Вічна класика світового балету. Історія про кохання принца Зігфріда та прекрасної Одетти, завороженої злим магом.</p>
             </div>
         </div>
     </div>
@@ -77,5 +81,6 @@
         });
     });
     </script>
+    <script src="lang.js"></script>
 </body>
 </html>

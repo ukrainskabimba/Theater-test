@@ -13,7 +13,17 @@ const translations = {
         about_text_2: "Кожен сезон ми готуємо для вас особливу програму, де світові шедеври отримують нове дихання завдяки таланту наших акторів та інноваціям у театральному дизайні.",
         contacts_title: "Наші контакти",
         address: "м. Київ, вул. Театральна, 12",
-        phone: "Телефон: +38 (044) 123-45-67"
+        phone: "Телефон: +38 (044) 123-45-67",
+        nav_repertoire: "Репертуар",
+        repertoire_title: "Репертуар театру",
+        chicago_title: "Чикаго",
+        chicago_desc: "Легендарний мюзикл про джаз, пристрасть та правосуддя. Історія Роксі Гарт, яка мріє про славу будь-якою ціною.",
+        phantom_title: "Привид Опери",
+        phantom_desc: "Містична історія кохання, що розгортається в підземеллях Паризької опери. Геній музики та його прекрасна учениця Крістін.",
+        swan_title: "Лебедине Озеро",
+        swan_desc: "Вічна класика світового балету. Історія про кохання принца Зігфріда та прекрасної Одетти, завороженої злим магом.",
+        about_show: "Про виставу",
+        book_tickets: "Замовити квитки"
     },
     en: {
         nav_home: "Home",
@@ -28,7 +38,17 @@ const translations = {
         about_text_2: "Every season we prepare a special program for you, where world masterpieces get a new breath thanks to the talent of our actors and innovations in theatrical design.",
         contacts_title: "Our contacts",
         address: "Kyiv, Teatralna st., 12",
-        phone: "Phone: +38 (044) 123-45-67"
+        phone: "Phone: +38 (044) 123-45-67",
+        nav_repertoire: "Repertoire",
+        repertoire_title: "Theater Repertoire",
+        chicago_title: "Chicago",
+        chicago_desc: "The legendary musical about jazz, passion, and justice. The story of Roxie Hart, who dreams of fame at any cost.",
+        phantom_title: "The Phantom of the Opera",
+        phantom_desc: "A mystical love story set in the dungeons of the Paris Opera. The musical genius and his beautiful pupil Christine.",
+        swan_title: "Swan Lake",
+        swan_desc: "The eternal classic of world ballet. The story of Prince Siegfried's love for the beautiful Odette, enchanted by an evil sorcerer.",
+        about_show: "About the show",
+        book_tickets: "Book tickets"
     }
 };
 
